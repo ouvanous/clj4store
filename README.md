@@ -11,19 +11,24 @@ A simple 4store http client.
 (def end-point (create-end-point "http://0.0.0.0:8009"))
 
 ; sparql query 
-(get end-point "SELECT ?s ?p ?o WHERE {?s ?p ?o} LIMIT 5 ") ; => {:status 200 :body {"head":{"vars":["s","p","o"]}, "results": { "bindings":[... }
+(get end-point "SELECT ?s ?p ?o WHERE {?s ?p ?o} LIMIT 5 ") 
+; => {:status 200 :body {"head":{"vars":["s","p","o"]}, "results": { "bindings":[... }
 
 ; sparql update 1.1
-(post end-point "INSERT { <http://test.com/1> <http://test.com/p1> <http://test.com/2> }") ; => {:status 200 :body "4store body message..." }
+(post end-point "INSERT { <http://test.com/1> <http://test.com/p1> <http://test.com/2> }") 
+; => {:status 200 :body "4store body message..." }
 
 ; replace data in graph
-(put end-point "<http://test.com/2> <http://test.com/p1> <http://test.com/1> ." "http://mygraph.com") ; => {:status 201 :body "imported successfully ..." }
+(put end-point "<http://test.com/2> <http://test.com/p1> <http://test.com/1> ." "http://mygraph.com") 
+; => {:status 201 :body "imported successfully ..." }
 
 ; replace data in graph by file data
-(put-file end-point "/path/to/file.nt" "http://mygraph.com") ; => {:status 201 :body "imported successfully ..." }
+(put-file end-point "/path/to/file.nt" "http://mygraph.com") 
+; => {:status 201 :body "imported successfully ..." }
 
 ; delete graph
-(delete end-point "http://mygraph.com") ; => {:status 200 :body "200 deleted successfully ..." }
+(delete end-point "http://mygraph.com") 
+; => {:status 200 :body "200 deleted successfully ..." }
 
 ```
 ## License
