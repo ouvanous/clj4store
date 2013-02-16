@@ -1,13 +1,15 @@
 # clj4store
 
-A Clojure library designed to ... well, that part is up to you.
+A simple 4store http client.
+
 
 ## Usage
+```clojure
+; define the 4store end-point
+(def end-point (create-end-point "http://0.0.0.0:8009"))
 
-FIXME
-
+; simple query 
+; (print (get end-point "SELECT ?s ?p ?o WHERE {?s ?p ?o} LIMIT 500 "))
+```
 ## License
-
-Copyright © 2013 FIXME
-
 Distributed under the Eclipse Public License, the same as Clojure.
