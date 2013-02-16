@@ -1,6 +1,5 @@
 (ns clj4store.core
-  (:use [ring.util.codec :only (url-encode url-decode)]
-       	[clojure.string :only (join)])
+  (:use [clojure.string :only (join)])
   (:require [http.async.client :as http]
             [clojure.java.io :as io]))
  
@@ -143,10 +142,10 @@
 ; tests 
 
 ; define the 4store end-point
-; (def end-point (create-end-point "http://0.0.0.0:8009"))
+(def end-point (create-end-point "http://0.0.0.0:8009"))
 
 ; simple query 
-; (print (get end-point "SELECT ?s ?p ?o WHERE {?s ?p ?o} LIMIT 10000 "))
+; (print (get end-point "SELECT ?s ?p ?o WHERE {?s ?p ?o} LIMIT 500 "))
 
 ; simple insert 
 ; (println (post end-point "INSERT { <http://test.com/1> <http://test.com/p3> <http://test.com/1> }"))
