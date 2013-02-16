@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Clj4store : Simple http 4store client for clojure" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Clj4store</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/ouvanous/clj4store">View on GitHub</a>
+
+          <h1 id="project_title">Clj4store</h1>
+          <h2 id="project_tagline">Simple http 4store client for clojure</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/ouvanous/clj4store/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/ouvanous/clj4store/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>clj4store</h1>
+
+<p>A simple 4store http client for clojure.</p>
+
+<h2>Usage</h2>
+
+<div class="highlight"><pre><span class="c1">; return {:status "4store status code" :body "4store body message" }</span>
+
+<span class="c1">; define the 4store end-point</span>
+<span class="p">(</span><span class="k">def </span><span class="nv">end-point</span> <span class="p">(</span><span class="nf">create-end-point</span> <span class="s">"http://0.0.0.0:8009"</span><span class="p">))</span>
+
+<span class="c1">; sparql query </span>
+<span class="p">(</span><span class="nb">get </span><span class="nv">end-point</span> <span class="s">"SELECT ?s ?p ?o WHERE {?s ?p ?o} LIMIT 5 "</span><span class="p">)</span> 
+<span class="c1">; =&gt; {:status 200 :body {"head":{"vars":["s","p","o"]}, "results": { "bindings":[... }</span>
+
+<span class="c1">; sparql update 1.1</span>
+<span class="p">(</span><span class="nf">post</span> <span class="nv">end-point</span> <span class="s">"INSERT { &lt;http://test.com/1&gt; &lt;http://test.com/p1&gt; &lt;http://test.com/2&gt; }"</span><span class="p">)</span> 
+<span class="c1">; =&gt; {:status 200 :body "4store body message..." }</span>
+
+<span class="c1">; replace data in graph</span>
+<span class="p">(</span><span class="nf">put</span> <span class="nv">end-point</span> <span class="s">"&lt;http://test.com/2&gt; &lt;http://test.com/p1&gt; &lt;http://test.com/1&gt; ."</span> <span class="s">"http://mygraph.com"</span><span class="p">)</span> 
+<span class="c1">; =&gt; {:status 201 :body "imported successfully ..." }</span>
+
+<span class="c1">; replace data in graph by file data</span>
+<span class="p">(</span><span class="nf">put-file</span> <span class="nv">end-point</span> <span class="s">"/path/to/file.nt"</span> <span class="s">"http://mygraph.com"</span><span class="p">)</span> 
+<span class="c1">; =&gt; {:status 201 :body "imported successfully ..." }</span>
+
+<span class="c1">; delete graph</span>
+<span class="p">(</span><span class="nf">delete</span> <span class="nv">end-point</span> <span class="s">"http://mygraph.com"</span><span class="p">)</span> 
+<span class="c1">; =&gt; {:status 200 :body "200 deleted successfully ..." }</span>
+
+</pre></div>
+
+<h2>License</h2>
+
+<p>Distributed under the Eclipse Public License, the same as Clojure.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Clj4store maintained by <a href="https://github.com/ouvanous">ouvanous</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
