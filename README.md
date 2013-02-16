@@ -1,6 +1,6 @@
 # clj4store
 
-A simple 4store http client.
+A simple 4store http client for clojure.
 
 ## Usage
 
@@ -31,5 +31,6 @@ A simple 4store http client.
 ; => {:status 200 :body "200 deleted successfully ..." }
 
 ```
+
 ## License
 Distributed under the Eclipse Public License, the same as Clojure.

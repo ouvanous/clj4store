@@ -81,6 +81,7 @@
 
 
 (defn get 
+  "sparql query"
   [end-point query]
   (with-open [client (http/create-client)]
     (let [res (http/GET client (:sparql end-point) 
@@ -94,6 +95,7 @@
 
         
 (defn post 
+  "sparql update"
   [end-point query] 
   (with-open [client (http/create-client)]
     (let [res (http/POST client (:update end-point) 
@@ -106,6 +108,7 @@
 
 
 (defn put 
+  "replace data"
   [end-point data graph] 
   (with-open [client (http/create-client)]
     (let [res (http/PUT client (str (:data end-point) graph)
@@ -118,6 +121,7 @@
 
 
 (defn put-file 
+  "replace data by file data"
   [end-point file graph] 
   (let [ff (io/file file)]
     (put end-point ff graph)))
@@ -126,6 +130,7 @@
 
 
 (defn delete 
+  "delete graph"
   [end-point graph] 
   (with-open [client (http/create-client)]
     (let [res (http/DELETE client (str (:data end-point)graph))]
