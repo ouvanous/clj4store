@@ -139,19 +139,25 @@
 
 
 
-; tests 
+; examples 
 
 ; define the 4store end-point
-(def end-point (create-end-point "http://0.0.0.0:8009"))
+; (def end-point (create-end-point "http://0.0.0.0:8009"))
 
-; simple query 
-; (print (get end-point "SELECT ?s ?p ?o WHERE {?s ?p ?o} LIMIT 500 "))
+; sparql query 
+; (print (get end-point "SELECT ?s ?p ?o WHERE {?s ?p ?o} LIMIT 5 ")) ; => {:status 200 :body {"head":{"vars":["s","p","o"]}, "results": { "bindings":[... }
 
-; simple insert 
-; (println (post end-point "INSERT { <http://test.com/1> <http://test.com/p3> <http://test.com/1> }"))
-; (println (put end-point "<http://test.com/1> <http://test.com/p4> <http://test.com/1> ." "http://sam.com"))
-; (println (put-file end-point "/Users/ouvasam/Dropbox/ouvanous/projets/actifs/clojure/clj4store/src/clj4store/test.nt" "http://sam.com"))
-; (println (delete end-point "http://sam.com"))
+; sparql update 1.1
+; (print (post end-point "INSERT { <http://test.com/1> <http://test.com/p1> <http://test.com/2> }")) ; => {:status 200 :body "4store body message..." }
+
+; replace data in graph
+;(print (put end-point "<http://test.com/2> <http://test.com/p1> <http://test.com/1> ." "http://mygraph.com")) ; => {:status 201 :body "imported successfully ..." }
+
+; replace data in graph by file data
+;(print (put-file end-point "/Users/ouvasam/Dropbox/ouvanous/projets/actifs/clojure/clj4store/src/clj4store/test.nt" "http://mygraph.com")) ; => {:status 201 :body "imported successfully ..." }
+
+; delete graph
+;(print (delete end-point "http://mygraph.com")) ; => {:status 200 :body "200 deleted successfully ..." }
 
 
 
