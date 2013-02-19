@@ -42,12 +42,20 @@
 <span class="c1">; define the 4store end-point</span>
 <span class="p">(</span><span class="k">def </span><span class="nv">end-point</span> <span class="p">(</span><span class="nf">create-end-point</span> <span class="s">"http://0.0.0.0:8009"</span><span class="p">))</span>
 
-<span class="c1">; sparql query </span>
+<span class="c1">; define a sparql prefixes string</span>
+<span class="p">(</span><span class="k">def </span><span class="nv">prefixes-str</span> <span class="p">(</span><span class="nf">sparql-prefixes</span> <span class="nv">base-prefixes</span> <span class="p">{</span><span class="ss">:ex</span> <span class="s">"http://example.com/"</span><span class="p">}))</span>
+<span class="c1">; =&gt; "PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; ..."</span>
+
+<span class="c1">; sparql query without prefixes string </span>
 <span class="p">(</span><span class="nb">get </span><span class="nv">end-point</span> <span class="s">"SELECT ?s ?p ?o WHERE {?s ?p ?o} LIMIT 5 "</span><span class="p">)</span> 
 <span class="c1">; =&gt; {:status 200 :body {"head":{"vars":["s","p","o"]}, "results": { "bindings":[... }</span>
 
+<span class="c1">; sparql query with prefixes string </span>
+<span class="p">(</span><span class="nb">get </span><span class="nv">end-point</span> <span class="p">(</span><span class="nf">prefixed-query</span> <span class="nv">prefixes-str</span> <span class="s">"SELECT ?p ?o WHERE {ex:resource1 ?p ?o} LIMIT 5 "</span><span class="p">))</span>
+<span class="c1">; =&gt; {:status 200 :body {"head":{"vars":[p","o"]}, "results": { "bindings":[... }</span>
+
 <span class="c1">; sparql update 1.1</span>
-<span class="p">(</span><span class="nf">post</span> <span class="nv">end-point</span> <span class="s">"INSERT { &lt;http://test.com/1&gt; &lt;http://test.com/p1&gt; &lt;http://test.com/2&gt; }"</span><span class="p">)</span> 
+<span class="p">(</span><span class="nf">post</span> <span class="nv">end-point</span> <span class="p">(</span><span class="nf">prefixed-query</span> <span class="nv">prefixes-str</span> <span class="s">"INSERT { &lt;http://test.com/1&gt; &lt;http://test.com/p1&gt; &lt;http://test.com/2&gt; }"</span><span class="p">))</span> 
 <span class="c1">; =&gt; {:status 200 :body "4store body message..." }</span>
 
 <span class="c1">; replace data in graph</span>
