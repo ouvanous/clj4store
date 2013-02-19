@@ -11,7 +11,7 @@ A simple 4store http client for clojure.
 (def end-point (create-end-point "http://0.0.0.0:8009"))
 
 ; define a sparql prefixes string
-; (def prefixes-str (sparql-prefixes base-prefixes {:ex "http://example.com/"}))
+(def prefixes-str (sparql-prefixes base-prefixes {:ex "http://example.com/"}))
 ; => "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ..."
 
 ; sparql query without prefixes string 
