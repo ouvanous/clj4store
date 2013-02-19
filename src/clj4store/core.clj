@@ -138,7 +138,7 @@
 ; (put end-point "<http://test.com/2> <http://test.com/p1> <http://test.com/1> ." "http://mygraph.com") ; => {:status 201 :body "imported successfully ..." }
 
 ; replace data in graph by file data
-; (put-file end-point "/Users/ouvasam/Dropbox/ouvanous/projets/actifs/clojure/clj4store/src/clj4store/test.nt" "http://mygraph.com") ; => {:status 201 :body "imported successfully ..." }
+; (put-file end-point "/path/to/file.nt" "http://mygraph.com") ; => {:status 201 :body "imported successfully ..." }
 
 ; delete graph
 ; (delete end-point "http://mygraph.com") ; => {:status 200 :body "200 deleted successfully ..." }
