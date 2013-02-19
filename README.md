@@ -10,12 +10,20 @@ A simple 4store http client for clojure.
 ; define the 4store end-point
 (def end-point (create-end-point "http://0.0.0.0:8009"))
 
-; sparql query 
+; define a sparql prefixes string
+; (def prefixes-str (sparql-prefixes base-prefixes {:ex "http://example.com/"}))
+; => "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ..."
+
+; sparql query without prefixes string 
 (get end-point "SELECT ?s ?p ?o WHERE {?s ?p ?o} LIMIT 5 ") 
 ; => {:status 200 :body {"head":{"vars":["s","p","o"]}, "results": { "bindings":[... }
 
+; sparql query with prefixes string 
+(get end-point (prefixed-query prefixes-str "SELECT ?p ?o WHERE {ex:resource1 ?p ?o} LIMIT 5 "))
+; => {:status 200 :body {"head":{"vars":[p","o"]}, "results": { "bindings":[... }
+
 ; sparql update 1.1
-(post end-point "INSERT { <http://test.com/1> <http://test.com/p1> <http://test.com/2> }") 
+(post end-point (prefixed-query prefixes-str "INSERT { <http://test.com/1> <http://test.com/p1> <http://test.com/2> }")) 
 ; => {:status 200 :body "4store body message..." }
 
 ; replace data in graph
