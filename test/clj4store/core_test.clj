@@ -15,7 +15,7 @@
                             (new java.io.StringReader s)))))
 
 
-(def end-point (c/create-end-point "http://0.0.0.0:8020"))
+(def end-point "http://0.0.0.0:8010")
 (def prefixes-str (c/sparql-prefixes c/base-prefixes {:ex "http://example.com/"}))
 
 
@@ -57,16 +57,6 @@
 ;- TESTS
 
 
-(deftest end-point-test
-  (testing "end-point URIs "
-    (let [s0 (:sparql end-point)
-          s1 (:update end-point)
-          s2 (:data end-point)]
-      (is (= s0 "http://0.0.0.0:8020/sparql/"))
-      (is (= s1 "http://0.0.0.0:8020/update/"))
-      (is (= s2 "http://0.0.0.0:8020/data/")))))
-
-
 
 (deftest prefixes-test
   (testing "Prefixes"
@@ -84,6 +74,7 @@
     (testing "store should be empty"
       (let [res1 (get-json)
             res2 (get-xml)]
+        (print res1 res2)
         (is (= 200 (:status res1)))
         (is (= 0 (count (:results res1))))
         (is (= 200 (:status res2)))

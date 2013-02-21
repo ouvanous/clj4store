@@ -8,7 +8,7 @@ A simple 4store http client for clojure.
 ; return {:status "4store status code" :body "4store body message" }
 
 ; define the 4store end-point
-(def end-point (create-end-point "http://0.0.0.0:8009"))
+(def end-point "http://0.0.0.0:8009")
 
 ; define a sparql prefixes string
 (def prefixes-str (sparql-prefixes base-prefixes {:ex "http://example.com/"}))

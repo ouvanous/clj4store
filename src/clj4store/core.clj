@@ -52,16 +52,6 @@
 
 
 
-(defn create-end-point 
-  "return a hash of uris to connect to the 4store end-point
-  (create-end-point \"http://0.0.0.0:3000\")" 
-  [end-point] 
-  {:sparql (str end-point "/sparql/")
-   :update (str end-point "/update/")
-   :data 	 (str end-point "/data/")})
-
-
-
 (defn prefixed-query 
   "add a prefixes string to the sparql query"
   [prefixes query]
@@ -76,7 +66,7 @@
   ([end-point query] (get end-point query :json))
   ([end-point query mime-type]
   (with-open [client (http/create-client)]
-    (let [res (http/GET client (:sparql end-point) 
+    (let [res (http/GET client (str end-point "/sparql/") 
                         :query {:query query}
                         :headers {:accept (mime-type sparql-mime-types)})]
       (http/await res)
@@ -89,7 +79,7 @@
   "run a sparql update and return {:status statusCode :body content}"
   [end-point query] 
   (with-open [client (http/create-client)]
-    (let [res (http/POST client (:update end-point) 
+    (let [res (http/POST client (str end-point "/update/") 
                         :body {:update query}
                         :headers {:mime-type "application/x-www-form-urlencoded"})]
       (http/await res)
@@ -103,7 +93,7 @@
   ([end-point data graph] (put end-point data graph :turtle))
   ([end-point data graph mime-type] 
   (with-open [client (http/create-client)]
-    (let [res (http/PUT client (str (:data end-point) graph)
+    (let [res (http/PUT client (str end-point "" graph)
                         :body data
                         :headers {:content-type (mime-type sparql-mime-types)})]
     	(http/await res)
@@ -125,7 +115,7 @@
   "delete graph"
   [end-point graph] 
   (with-open [client (http/create-client)]
-    (let [res (http/DELETE client (str (:data end-point)graph))]
+    (let [res (http/DELETE client (str end-point "/data/" graph))]
       (http/await res)
     	{:status (:code (http/status res)) 
        :body (http/string res)})))
@@ -140,7 +130,7 @@
 ;- EXAMPLES
 
 ; define the 4store end-point
-; (def end-point (create-end-point "http://0.0.0.0:8020"))
+; (def end-point "http://0.0.0.0:8020")
 
 ; define a sparql prefixes string
 ; (def prefixes-str (sparql-prefixes base-prefixes {:ex "http://test.com"}))
