@@ -1,5 +1,7 @@
 (ns clj4store.core
-  (:use [clojure.string :only (join)])
+  (:use [clojure.string :only (join)]
+        [clojure.java.shell :only [sh]]
+        [http.async.client.request :only [url-encode]])
   (:require [http.async.client :as http]
             [clojure.java.io :as io]))
 
@@ -59,6 +61,11 @@
 
 
 
+(defn get-construct-uri
+  [end-point query]
+  (str end-point "/sparql/?query=" (url-encode query)))
+
+
 (defn get 
   "run sparql query and return {:status statusCode :body content}
   statusCode: http status code retruns by 4store
@@ -73,6 +80,23 @@
       {:status (:code (http/status res))
        :body (http/string res)}))))
            
+
+
+(defn construct
+  "run sparql CONSTRUCT query and return {:status statusCode :body content :err err}
+  statusCode: http status code retruns by 4store
+  content: body return by 4store (json, xml, text, ...)
+  err: error returned by rapper if exit code is 1 or 2"
+  ([end-point query] (construct end-point query :turtle))
+  ([end-point query mime-type]
+    (let [res (sh "rapper" "-i" "rdfxml" "-o" "turtle" (get-construct-uri end-point query))
+          {err :err out :out exit :exit} res]
+          (cond 
+            (= exit 0) {:status 200 :body out}
+            (= exit 2) {:status 200 :body out :err err}
+            :else {:status 500 :body err :exit exit})
+          )))
+
 
         
 (defn post 
@@ -130,13 +154,17 @@
 ;- EXAMPLES
 
 ; define the 4store end-point
-; (def end-point "http://0.0.0.0:8020")
+; (def end-point "http://0.0.0.0:8010")
 
 ; define a sparql prefixes string
 ; (def prefixes-str (sparql-prefixes base-prefixes {:ex "http://test.com"}))
 
+
+; (print (construct end-point (prefixed-query prefixes-str "CONSTRUCT {?s ?p ?o} WHERE  {?s ?p ?o}")))
+; (println "okok")
+
 ; sparql query without prefixes
-; (get end-point "SELECT ?s ?p ?o WHERE  {?s ?p ?o} LIMIT 10")  ; => {:status 200 :body {"head":{"vars":["s","p","o"]}, "results": { "bindings":[... }
+;(get end-point "SELECT ?s ?p ?o WHERE  {?s ?p ?o} LIMIT 10")  ; => {:status 200 :body {"head":{"vars":["s","p","o"]}, "results": { "bindings":[... }
 
 ; sparql query with prefixes
 ; (get end-point (prefixed-query prefixes-str "SELECT ?s ?p ?o WHERE {?s ?p ?o} LIMIT 5 ")) ; => {:status 200 :body {"head":{"vars":["s","p","o"]}, "results": { "bindings":[... }
