@@ -117,7 +117,7 @@
   ([end-point data graph] (put end-point data graph :turtle))
   ([end-point data graph mime-type] 
   (with-open [client (http/create-client)]
-    (let [res (http/PUT client (str end-point "" graph)
+    (let [res (http/PUT client (str end-point "/data/" graph)
                         :body data
                         :headers {:content-type (mime-type sparql-mime-types)})]
     	(http/await res)
@@ -154,7 +154,7 @@
 ;- EXAMPLES
 
 ; define the 4store end-point
-; (def end-point "http://0.0.0.0:8010")
+(def end-point "http://0.0.0.0:8010")
 
 ; define a sparql prefixes string
 ; (def prefixes-str (sparql-prefixes base-prefixes {:ex "http://test.com"}))
