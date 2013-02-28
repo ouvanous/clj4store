@@ -154,7 +154,7 @@
 ;- EXAMPLES
 
 ; define the 4store end-point
-(def end-point "http://0.0.0.0:8010")
+; (def end-point "http://0.0.0.0:8010")
 
 ; define a sparql prefixes string
 ; (def prefixes-str (sparql-prefixes base-prefixes {:ex "http://test.com"}))
