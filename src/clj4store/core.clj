@@ -60,6 +60,12 @@
   (str prefixes "\n" query ))
 
 
+(defn resolve-prefix
+  [property prefixes]
+  (let [[pre prop] (clojure.string/split property #":")
+        uri ((keyword pre) prefixes)]
+    (str uri prop)))
+
 
 (defn get-construct-uri
   [end-point query]
