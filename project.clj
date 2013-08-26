@@ -1,4 +1,4 @@
-(defproject clj4store "0.1.5"
+(defproject clj4store "0.1.51"
   :description "Simple HTTP client for 4store"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"

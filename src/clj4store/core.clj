@@ -19,7 +19,7 @@
                         :xml "application/sparql-results+xml" ; when using CONSTRUCT 4store will return XML too even if this type is not valid
                         :rdf-xml "application/rdf+xml" ; used to put rdf xml data
                         :turtle "text/turtle" ; used only for construct / describe 
-                        :tsv "text/tab-separated-values"
+                        :csv "text/csv"
                         })
 
 
