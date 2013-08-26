@@ -1,4 +1,5 @@
 (ns clj4store.core
+  (:refer-clojure :exclude [get])
   (:use [clojure.string :only (join)]
         [clojure.java.shell :only [sh]]
         [http.async.client.request :only [url-encode]])
@@ -15,10 +16,11 @@
 ;- SPARQL MIME-TYPES enum
  
 (def sparql-mime-types {:json "application/sparql-results+json" 
-                           :xml "application/sparql-results+xml" ; when using CONSTRUCT 4store will return XML too even if this type is not valid
-                           :rdf-xml "application/rdf+xml" ; used to put rdf xml data
-                           :turtle "text/turtle" ; used only for construct / describe 
-                           })
+                        :xml "application/sparql-results+xml" ; when using CONSTRUCT 4store will return XML too even if this type is not valid
+                        :rdf-xml "application/rdf+xml" ; used to put rdf xml data
+                        :turtle "text/turtle" ; used only for construct / describe 
+                        :tsv "text/tab-separated-values"
+                        })
 
 
 
@@ -80,7 +82,7 @@
   ([end-point query mime-type]
   (with-open [client (http/create-client)]
     (let [res (http/GET client (str end-point "/sparql/") 
-                        :query {:query query}
+                        :query {:query query :soft-limit -1}
                         :headers {:accept (mime-type sparql-mime-types)})]
       (http/await res)
       {:status (:code (http/status res))
@@ -115,6 +117,21 @@
       (http/await res)
     	{:status (:code (http/status res)) 
        :body (http/string res)})))
+
+
+
+(defn post-data 
+  "add data"
+  ([end-point data graph] (post-data end-point data graph :turtle))
+  ([end-point data graph mime-type] 
+  (with-open [client (http/create-client)]
+    (let [res (http/POST client (str end-point "/data/")
+                        :body {:data data :graph graph :mime-type "application/x-turtle"}
+                        :headers {:content-type "application/x-www-form-urlencoded"})]
+      (http/await res)
+      (println "res" res)
+      {:status (:code (http/status res)) 
+       :body (http/string res)}))))
 
 
 
